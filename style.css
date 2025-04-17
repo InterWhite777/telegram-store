@@ -1,34 +1,70 @@
+/* Базовые стили */
 body {
-  background-color: #1c1c1c;
-  color: #fff;
-  font-family: sans-serif;
-  padding: 20px;
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Заголовок */
+h1 {
   text-align: center;
+  margin-bottom: 20px;
+  color: var(--text-color);
+  font-size: 24px;
 }
+
+/* Список товаров */
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Карточка товара */
 .product {
-  background-color: #2b2b2b;
-  padding: 15px;
-  margin: 10px 0;
+  background-color: var(--card-bg);
+  padding: 20px;
   border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.2s ease;
 }
+
+.product:hover {
+  transform: scale(1.02);
+}
+
+/* Кнопка */
 button {
-  background-color: #00bcd4;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 18px;
   border: none;
-  color: white;
-  padding: 10px 15px;
   border-radius: 8px;
+  cursor: pointer;
   font-size: 16px;
+  margin-top: 12px;
+  transition: background-color 0.2s ease;
 }
-.notification {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #2ecc71;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  font-size: 16px;
-  z-index: 1000;
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* ---------- Темы ---------- */
+
+/* Светлая тема по умолчанию */
+:root {
+  --bg-color: #f7f7f7;
+  --text-color: #222;
+  --card-bg: #ffffff;
+}
+
+/* Тёмная тема Telegram */
+html[theme='dark'] {
+  --bg-color: #1e1e1e;
+  --text-color: #ffffff;
+  --card-bg: #2a2a2a;
 }
