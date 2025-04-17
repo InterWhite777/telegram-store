@@ -1,41 +1,50 @@
-let cart = [];
+const tg = window.Telegram.WebApp;
+tg.expand();
 
-function buy(item, price) {
-  cart.push({ item, price });
-  showNotification("✅ Товар добавлен в корзину");
-  console.log(cart); // можно удалить — для отладки
+const cart = [];
+const cartItemsElement = document.getElementById("cart-items");
+const totalElement = document.getElementById("total");
+const confirmation = document.getElementById("confirmation");
+
+function addToCart(name, price) {
+  cart.push({ name, price });
+  updateCart();
 }
 
-function showNotification(message) {
-  const notif = document.createElement("div");
-  notif.className = "notification";
-  notif.innerText = message;
-  document.body.appendChild(notif);
+function updateCart() {
+  cartItemsElement.innerHTML = "";
+  let total = 0;
 
-  setTimeout(() => {
-    notif.remove();
-  }, 2000);
+  cart.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = `${item.name} — ${item.price} ₽`;
+    cartItemsElement.appendChild(li);
+    total += item.price;
+  });
+
+  totalElement.textContent = `Итого: ${total} ₽`;
 }
 
-function openCart() {
+function checkout() {
   if (cart.length === 0) {
-    showNotification("🛒 Корзина пуста");
+    alert("Корзина пуста!");
     return;
   }
 
-  let summary = "🧾 Ваш заказ:\n";
-  let total = 0;
+  confirmation.style.display = "block";
 
-  cart.forEach(({ item, price }, i) => {
-    summary += `${i + 1}. ${item} — ${price} ₽\n`;
-    total += price;
-  });
+  setTimeout(() => {
+    confirmation.style.display = "none";
+    cart.length = 0;
+    updateCart();
+  }, 2000);
 
-  summary += `\nИтого: ${total} ₽`;
+  tg.sendData(JSON.stringify(cart)); // Отправка данных в бота
+}
 
-  // Отправка данных в Telegram-бота
-  Telegram.WebApp.sendData(JSON.stringify({ type: "cart", items: cart }));
-
-  showNotification("✅ Заказ отправлен");
-  cart = []; // очищаем корзину
+// Показ имени пользователя
+const userInfo = document.getElementById("user-info");
+if (tg.initDataUnsafe.user) {
+  const { first_name, last_name, username } = tg.initDataUnsafe.user;
+  userInfo.innerText = `👤 ${first_name} ${last_name || ""} (@${username || "нет"})`;
 }
