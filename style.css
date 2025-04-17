@@ -1,95 +1,24 @@
 body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
-
-h1, h2 {
-  text-align: center;
-  margin: 20px 0 10px;
-  color: var(--text-color);
-}
-
-.product-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   padding: 20px;
 }
-
+h1 {
+  color: #333;
+}
 .product {
-  background-color: var(--card-bg);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  text-align: center;
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
 button {
-  background-color: #4caf50;
+  padding: 10px 15px;
+  background-color: #2a9d8f;
   color: white;
-  padding: 10px 18px;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  margin-top: 12px;
-  transition: background-color 0.2s ease;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-.cart {
-  background-color: var(--card-bg);
-  margin: 20px;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-}
-
-#cart-items {
-  list-style: none;
-  padding-left: 0;
-}
-
-#cart-items li {
-  padding: 4px 0;
-  border-bottom: 1px solid #ccc;
-}
-
-.confirmation {
-  display: none;
-  text-align: center;
-  font-size: 18px;
-  margin-top: 20px;
-  color: green;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-.user-info {
-  text-align: center;
-  font-size: 14px;
-  color: var(--text-color);
-  margin-bottom: 10px;
-}
-
-/* Темы */
-:root {
-  --bg-color: #f7f7f7;
-  --text-color: #222;
-  --card-bg: #ffffff;
-}
-
-html[theme='dark'] {
-  --bg-color: #1e1e1e;
-  --text-color: #ffffff;
-  --card-bg: #2a2a2a;
 }
