@@ -1,13 +1,18 @@
-function buy(item, price) {
-  const data = {
-    item: item,
-    price: price
-  };
+let cart = [];
 
-  if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-    Telegram.WebApp.disableClosingConfirmation(); // <-- предотвращаем автоматическое закрытие
-    Telegram.WebApp.sendData(JSON.stringify(data));
-  } else {
-    alert("Telegram WebApp API не найден");
-  }
+function buy(item, price) {
+  cart.push({ item, price });
+  showNotification("✅ Товар добавлен в корзину");
+  console.log(cart); // можно удалить — для отладки
+}
+
+function showNotification(message) {
+  const notif = document.createElement("div");
+  notif.className = "notification";
+  notif.innerText = message;
+  document.body.appendChild(notif);
+
+  setTimeout(() => {
+    notif.remove();
+  }, 2000);
 }
