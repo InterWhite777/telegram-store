@@ -19,3 +19,16 @@ button {
   border-radius: 8px;
   font-size: 16px;
 }
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2ecc71;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  font-size: 16px;
+  z-index: 1000;
+}
