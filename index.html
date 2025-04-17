@@ -1,36 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Магазин</title>
+  <title>🛍 Наш магазин</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f7f7f7;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .product-list {
+      display: grid;
+      gap: 20px;
+    }
+    .product {
+      background: white;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .product h3 {
+      margin: 0 0 10px;
+    }
+    .product p {
+      margin: 0 0 10px;
+      font-weight: bold;
+    }
+    .product button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .product button:hover {
+      background-color: #45a049;
+    }
+    .cart-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 20px;
+      background-color: #0088cc;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2ecc71;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      font-size: 16px;
+      z-index: 1000;
+    }
+  </style>
 </head>
 <body>
   <h1>🛍 Наш магазин</h1>
+
   <div class="product-list">
     <div class="product">
       <h3>🎧 Наушники</h3>
-      <p>Цена: 999 ₽</p>
-      <button onclick="buy('Ничего', 999)">Купить</button>
+      <p>Цена: 1990 ₽</p>
+      <button onclick="buy('Наушники', 1990)">Добавить в корзину</button>
     </div>
     <div class="product">
       <h3>⌚️ Умные часы</h3>
-      <p>Цена: 30 ₽</p>
-      <button onclick="buy('Умные часы', 30)">Купить</button>
+      <p>Цена: 3490 ₽</p>
+      <button onclick="buy('Умные часы', 3490)">Добавить в корзину</button>
     </div>
     <div class="product">
-      <h3>🎧 Тупые часы</h3>
-      <p>Цена: 199 ₽</p>
-      <button onclick="buy('Тупые часы', 199)">Купить</button>
-    </div>
-    <div class="product">
-      <h3>⌚️ Умныое ничего</h3>
-      <p>Цена: 390 ₽</p>
-      <button onclick="buy('Умныое ничего', 390)">Купить</button>
+      <h3>📱 Смартфон</h3>
+      <p>Цена: 7990 ₽</p>
+      <button onclick="buy('Смартфон', 7990)">Добавить в корзину</button>
     </div>
   </div>
+
+  <button class="cart-btn" onclick="openCart()">🛒 Оформить заказ</button>
+
+  <script>
+    Telegram.WebApp.ready();
+    Telegram.WebApp.disableClosingConfirmation();
+
+    let cart = [];
+
+    function buy(item, price) {
+      cart.push({ item, price });
+      showNotification("✅ Товар добавлен в корзину");
+    }
+
+    function openCart() {
+      if (cart.length === 0) {
+        showNotification("🛒 Корзина пуста");
+        return;
+      }
+
+      let summary = "🧾 Ваш заказ:\n";
+      let total = 0;
+
+      cart.forEach(({ item, price }, i) => {
+        summary += `${i + 1}. ${item} — ${price} ₽\n`;
+        total += price;
+      });
+
+      summary += `\nИтого: ${total} ₽`;
+
+      Telegram.WebApp.sendData(JSON.stringify({
+        type: "cart",
+        items: cart,
+        total: total
+      }));
+
+      showNotification("✅ Заказ оформлен!");
+      cart = [];
+    }
+
+    function showNotification(message) {
+      const notif = document.createElement("div");
+      notif.className = "notification";
+      notif.innerText = message;
+      document.body.appendChild(notif);
+
+      setTimeout(() => {
+        notif.remove();
+      }, 2000);
+    }
+  </script>
 </body>
-<script src="script.js"></script>
 </html>
