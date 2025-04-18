@@ -1,24 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Магазин</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🛍 Магазин цифровых товаров</h1>
+  <h1>🛒 Наш магазин</h1>
+
   <div class="product">
-    <h3>Гайд по заработку</h3>
-    <p>Цена: 199 ₽</p>
-    <button onclick="buy('1')">Купить</button>
+    <h2>🎮 Цифровой ключ Steam</h2>
+    <p>Цена: 299 ₽</p>
+    <button onclick="buy('Цифровой ключ Steam', 299)">Купить</button>
   </div>
+
   <div class="product">
-    <h3>Скрипт для автоигры</h3>
-    <p>Цена: 349 ₽</p>
-    <button onclick="buy('2')">Купить</button>
+    <h2>💎 Виртуальные алмазы</h2>
+    <p>Цена: 499 ₽</p>
+    <button onclick="buy('Виртуальные алмазы', 499)">Купить</button>
   </div>
+
+  <script>
+    function buy(title, price) {
+      const user = window.Telegram.WebApp.initDataUnsafe.user;
+      const tg = window.Telegram.WebApp;
+
+      const paymentUrl = `https://yoomoney.ru/to/4100119106703740?message=Покупка: ${title} | Сумма: ${price}₽ | Пользователь: ${user?.username || 'без username'} (${user?.id})`;
+
+      fetch(`https://api.telegram.org/bot7940302366:AAFNwbWvIJIo2SVCOIFm5aVg8n-jrVkDWiQ/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: "@BmsM6QdustQyZDQ6",
+          text: `🛒 Новый заказ:\nТовар: ${title}\nСумма: ${price}₽\nПользователь: @${user?.username || 'без username'} (ID: ${user?.id})`
+        })
+      });
+
+      tg.openLink(paymentUrl);
+    }
+  </script>
 </body>
-<script src="script.js"></script>
 </html>
