@@ -1,24 +1,33 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  margin: 0;
+  background: #f0f0f0;
   padding: 20px;
+  text-align: center;
 }
+
 h1 {
+  margin-bottom: 20px;
   color: #333;
 }
-.product {
-  background: white;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
+
+.product {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
 button {
-  padding: 10px 15px;
-  background-color: #2a9d8f;
+  padding: 10px 20px;
+  background-color: #30a14e;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 }
