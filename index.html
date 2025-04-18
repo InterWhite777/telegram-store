@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <title>Магазин</title>
@@ -8,19 +8,26 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🛒 Наш магазин</h1>
+  <h1>🛍 Магазин</h1>
   <div class="product-list">
-    <div class="product">
-      <h3>🎮 Ключ от игры</h3>
-      <p>199 ₽</p>
-      <button onclick="buy('product1', 199)">Купить</button>
+    <div class="product" data-id="headphones" data-title="Наушники" data-price="1990">
+      <h3>🎧 Наушники</h3>
+      <p>Цена: 1990 ₽</p>
+      <button onclick="addToCart(this)">Добавить</button>
     </div>
-    <div class="product">
-      <h3>🎁 Обмен в Steam</h3>
-      <p>299 ₽</p>
-      <button onclick="buy('product2', 299)">Купить</button>
+    <div class="product" data-id="smartwatch" data-title="Умные часы" data-price="3490">
+      <h3>⌚️ Умные часы</h3>
+      <p>Цена: 3490 ₽</p>
+      <button onclick="addToCart(this)">Добавить</button>
+    </div>
+    <div class="product" data-id="key_game" data-title="Ключ от игры" data-price="490">
+      <h3>🎮 Ключ от игры</h3>
+      <p>Цена: 490 ₽</p>
+      <button onclick="addToCart(this)">Добавить</button>
     </div>
   </div>
+  <button class="checkout" onclick="checkout()">Оформить заказ</button>
+
   <script src="script.js"></script>
 </body>
 </html>
