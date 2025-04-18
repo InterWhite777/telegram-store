@@ -8,17 +8,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🛍 Магазин цифровых товаров</h1>
-  <div class="product">
-    <h3>Гайд по заработку</h3>
-    <p>Цена: 199 ₽</p>
-    <button onclick="buy('1')">Купить</button>
+  <h1>🛒 Наш магазин</h1>
+  <div class="product-list">
+    <div class="product">
+      <h3>🎮 Ключ от игры</h3>
+      <p>199 ₽</p>
+      <button onclick="buy('product1', 199)">Купить</button>
+    </div>
+    <div class="product">
+      <h3>🎁 Обмен в Steam</h3>
+      <p>299 ₽</p>
+      <button onclick="buy('product2', 299)">Купить</button>
+    </div>
   </div>
-  <div class="product">
-    <h3>Скрипт для автоигры</h3>
-    <p>Цена: 349 ₽</p>
-    <button onclick="buy('2')">Купить</button>
-  </div>
+  <script src="script.js"></script>
 </body>
-<script src="script.js"></script>
 </html>
