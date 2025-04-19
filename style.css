@@ -1,38 +1,63 @@
 body {
   font-family: Arial, sans-serif;
-  padding: 20px;
-  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  background: #f1f1f1;
 }
 
 h1 {
   text-align: center;
+  padding: 20px;
+  background: #0088cc;
+  color: white;
+  margin: 0;
 }
 
 .product-list {
   display: flex;
   flex-direction: column;
+  padding: 10px;
   gap: 15px;
 }
 
 .product {
   background: white;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 15px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-button {
-  padding: 10px 15px;
-  border: none;
+.product h3 {
+  margin: 0 0 5px 0;
+}
+
+.product p {
+  margin: 0 0 10px 0;
+}
+
+.product button {
   background: #0088cc;
+  border: none;
   color: white;
+  padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
 }
 
-.checkout {
-  display: block;
-  width: 100%;
-  margin-top: 20px;
-  background: green;
+.footer {
+  text-align: center;
+  padding: 15px;
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+}
+
+.footer button {
+  padding: 12px 20px;
+  font-size: 16px;
+  background: #44c767;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
 }
