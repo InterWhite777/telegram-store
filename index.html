@@ -1,32 +1,20 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Магазин</title>
+  <title>🛍 Магазин</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🛍 Магазин</h1>
-  <div class="product-list">
-    <div class="product" data-id="headphones" data-title="Наушники" data-price="1990">
-      <h3>🎧 Наушники</h3>
-      <p>Цена: 1990 ₽</p>
-      <button onclick="addToCart(this)">Добавить</button>
-    </div>
-    <div class="product" data-id="smartwatch" data-title="Умные часы" data-price="3490">
-      <h3>⌚️ Умные часы</h3>
-      <p>Цена: 3490 ₽</p>
-      <button onclick="addToCart(this)">Добавить</button>
-    </div>
-    <div class="product" data-id="key_game" data-title="Ключ от игры" data-price="490">
-      <h3>🎮 Ключ от игры</h3>
-      <p>Цена: 490 ₽</p>
-      <button onclick="addToCart(this)">Добавить</button>
-    </div>
+  <h1>🛍 Наш магазин</h1>
+
+  <div id="product-list" class="product-list"></div>
+
+  <div class="footer">
+    <button onclick="checkout()">🧾 Оформить заказ</button>
   </div>
-  <button onclick="checkout()">Оформить заказ</button>
 
   <script src="script.js"></script>
 </body>
