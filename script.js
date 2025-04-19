@@ -1,27 +1,42 @@
+const tg = window.Telegram.WebApp;
+tg.expand();
+
 let cart = [];
 
-function addToCart(button) {
-  const product = button.closest(".product");
-  const id = product.dataset.id;
-  const title = product.dataset.title;
-  const price = parseInt(product.dataset.price);
+const products = [
+  { name: "🎧 Наушники", price: 1990, auto: true },
+  { name: "⌚️ Умные часы", price: 3490, auto: false },
+  { name: "📱 Телефон", price: 5990, auto: true }
+];
 
-  const index = cart.findIndex(item => item.id === id);
-  if (index >= 0) {
-    cart[index].quantity += 1;
-  } else {
-    cart.push({ id, title, price, quantity: 1 });
+// Добавить товар в корзину
+function addToCart(productName) {
+  const product = products.find(p => p.name === productName);
+  if (product) {
+    cart.push(product);
+    alert(`${product.name} добавлен в корзину`);
   }
-
-  alert(`${title} добавлен в корзину`);
 }
 
+// Показать корзину и оплату
 function checkout() {
   if (cart.length === 0) {
     alert("Корзина пуста");
     return;
   }
 
-  Telegram.WebApp.sendData(JSON.stringify(cart));
-  Telegram.WebApp.close();
+  const summary = cart.map(p => `${p.name} - ${p.price}₽`).join("\n");
+  const total = cart.reduce((acc, p) => acc + p.price, 0);
+
+  if (confirm(`Ваш заказ:\n${summary}\n\nИтого: ${total}₽\nПерейти к оплате?`)) {
+    const paymentLink = `https://yoomoney.ru/to/4100119106703740`; // сюда — ваша ссылка YooMoney
+    const payload = {
+      cart,
+      total,
+      user: tg.initDataUnsafe.user,
+    };
+
+    tg.sendData(JSON.stringify(payload)); // отправка в бот
+    window.open(paymentLink, "_blank"); // открытие YooMoney
+  }
 }
