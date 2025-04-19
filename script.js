@@ -15,6 +15,7 @@ function addToCart(name) {
 }
 
 function checkout() {
+
   if (cart.length === 0) {
     alert("Корзина пуста!");
     return;
@@ -22,7 +23,24 @@ function checkout() {
 
   let order = cart.join(", ");
   tg.sendData(JSON.stringify({ action: "buy", order: order }));
+
+
+
+  if (confirm(`Ваш заказ:\n${summary}\n\nИтого: ${total}₽\nПерейти к оплате?`)) {
+    const paymentLink = `https://yoomoney.ru/to/4100119106703740`; // сюда — ваша ссылка YooMoney
+    const payload = {
+      cart,
+      total,
+      user: tg.initDataUnsafe.user,
+    };
+
+    tg.sendData(JSON.stringify(payload)); // отправка в бот
+    window.open(paymentLink, "_blank"); // открытие YooMoney
+  }
+
+
   tg.close();
+
 }
 
 const productList = document.getElementById("product-list");
