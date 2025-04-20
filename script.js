@@ -1,45 +1,46 @@
 let cart = [];
 
-function buy(name, price, manual = false) {
-  const existing = cart.find(item => item.name === name);
-  if (existing) {
-    existing.count += 1;
-  } else {
-    cart.push({ name, price, count: 1, manual });
-  }
-  alert(`Добавлено в корзину: ${name}`);
+function renderProducts() {
+  const container = document.getElementById("products");
+  products.forEach(product => {
+    const item = document.createElement("div");
+    item.innerHTML = `
+      <img src="${product.image}" width="200" height="150" /><br/>
+      <strong>${product.name}</strong><br/>
+      <span>${product.price}₽</span><br/>
+      <button onclick="addToCart(${product.id})">Добавить в корзину</button>
+    `;
+    container.appendChild(item);
+  });
+}
+
+function addToCart(productId) {
+  const product = products.find(p => p.id === productId);
+  cart.push(product);
+  renderCart();
+}
+
+function renderCart() {
+  const cartList = document.getElementById("cart-items");
+  cartList.innerHTML = "";
+  cart.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.textContent = item.name + " - " + item.price + "₽";
+    cartList.appendChild(li);
+  });
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  document.getElementById("total").textContent = "Итого: " + total + "₽";
 }
 
 function checkout() {
-  if (cart.length === 0) {
-    alert("Корзина пуста");
-    return;
-  }
-
-  const order = cart.map(item => `${item.name} x${item.count} (${item.manual ? "ручная выдача" : "авто"})`).join(", ");
-  const total = cart.reduce((sum, item) => sum + item.price * item.count, 0);
-
   const data = {
-    order: order,
-    total: total
+    order: cart.map(item => item.name).join(", "),
+    total: cart.reduce((sum, item) => sum + item.price, 0)
   };
-
-  if (window.Telegram.WebApp) {
-    Telegram.WebApp.sendData(JSON.stringify(data));
-    Telegram.WebApp.close();
-  } else {
-    alert("WebApp не поддерживается.");
-  }
+  Telegram.WebApp.sendData(JSON.stringify(data));
+  Telegram.WebApp.close();
 }
 
-document.getElementById("checkout").addEventListener("click", () => {
-  const order = cart.map(item => `${item.name} x${item.count}`).join("\n");
-  const total = cart.reduce((sum, item) => sum + item.price * item.count, 0);
-  
-  const data = {
-      order,
-      total
-  };
-
-  Telegram.WebApp.sendData(JSON.stringify(data)); // 👈 вот это важно
-});
+window.onload = () => {
+  renderProducts();
+};
