@@ -63,7 +63,7 @@ function checkout() {
     user: tg.initDataUnsafe.user,
     cart: cart
   };
-  fetch("https://api.telegram.org/bot<YOUR_TOKEN>/sendMessage", {
+  fetch("https://api.telegram.org/bot7940302366:AAFNwbWvIJIo2SVCOIFm5aVg8n-jrVkDWiQ/sendMessage", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
