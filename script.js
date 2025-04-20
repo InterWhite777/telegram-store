@@ -31,3 +31,15 @@ function checkout() {
     alert("WebApp не поддерживается.");
   }
 }
+
+document.getElementById("checkout").addEventListener("click", () => {
+  const order = cart.map(item => `${item.name} x${item.count}`).join("\n");
+  const total = cart.reduce((sum, item) => sum + item.price * item.count, 0);
+  
+  const data = {
+      order,
+      total
+  };
+
+  Telegram.WebApp.sendData(JSON.stringify(data)); // 👈 вот это важно
+});
