@@ -1,6 +1,3 @@
-const tg = window.Telegram.WebApp;
-tg.expand();
-
 let cart = [];
 
 function addToCart(name, price) {
