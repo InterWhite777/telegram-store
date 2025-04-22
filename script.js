@@ -1,82 +1,71 @@
 let cart = [];
 
 function addToCart(name, price) {
-  const item = cart.find(i => i.name === name);
-  if (item) {
-    item.quantity++;
+  const existing = cart.find(item => item.name === name);
+  if (existing) {
+    existing.quantity += 1;
   } else {
     cart.push({ name, price, quantity: 1 });
   }
-  updateCartCount();
-  animateCart();
+  alert(`✅ Добавлено: ${name}`);
 }
 
-function updateCartCount() {
-  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const badge = document.getElementById("cart-count");
-  if (badge) badge.innerText = count;
+function updateCartUI() {
+  const cartList = document.getElementById("cart-items");
+  const cartTotal = document.getElementById("cart-total");
+  cartList.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach(item => {
+    const itemText = `${item.name} x${item.quantity} = ${item.price * item.quantity}₽`;
+    const li = document.createElement("li");
+    li.textContent = itemText;
+    cartList.appendChild(li);
+    total += item.price * item.quantity;
+  });
+
+  cartTotal.textContent = `💰 Итого: ${total}₽`;
 }
 
-function animateCart() {
-  const icon = document.getElementById("cart-icon");
-  if (icon) {
-    icon.classList.add("animate-bounce");
-    setTimeout(() => icon.classList.remove("animate-bounce"), 300);
-  }
+function openSection(section) {
+  document.getElementById("main").classList.add("hidden");
+  document.getElementById("store-section").classList.add("hidden");
+  document.getElementById("cart-section").classList.add("hidden");
+  document.getElementById("profile-section").classList.add("hidden");
+
+  document.getElementById(`${section}-section`).classList.remove("hidden");
+
+  if (section === "cart") updateCartUI();
 }
 
-function goToCart() {
-  document.getElementById("store").classList.add("hidden");
-  document.getElementById("cabinet").classList.add("hidden");
-  document.getElementById("cart").classList.remove("hidden");
-  renderCart();
+function backToMain() {
+  document.getElementById("store-section").classList.add("hidden");
+  document.getElementById("cart-section").classList.add("hidden");
+  document.getElementById("profile-section").classList.add("hidden");
+  document.getElementById("main").classList.remove("hidden");
 }
 
-function goToCabinet() {
-  document.getElementById("store").classList.add("hidden");
-  document.getElementById("cart").classList.add("hidden");
-  document.getElementById("cabinet").classList.remove("hidden");
-}
-
-function goBack() {
-  document.getElementById("store").classList.remove("hidden");
-  document.getElementById("cart").classList.add("hidden");
-  document.getElementById("cabinet").classList.add("hidden");
-}
-
-function renderCart() {
-  const container = document.getElementById("cart-items");
-  container.innerHTML = "";
-
+function submitOrder() {
   if (cart.length === 0) {
-    container.innerHTML = "<p class='text-center text-gray-500'>Корзина пуста</p>";
+    alert("Корзина пуста!");
     return;
   }
 
-  cart.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "flex justify-between py-2 border-b";
-    div.innerHTML = `
-      <span>${item.name} x${item.quantity}</span>
-      <span>${item.price * item.quantity}₽</span>
-    `;
-    container.appendChild(div);
-  });
+  let total = 0;
+  cart.forEach(item => total += item.price * item.quantity);
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  document.getElementById("cart-total").innerText = `Итого: ${total}₽`;
-}
-
-function sendOrder() {
-  if (cart.length === 0) return;
-
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const data = {
     items: cart,
     total: total
   };
-  if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.sendData(JSON.stringify(data));
-    Telegram.WebApp.close();
+
+  if (window.Telegram.WebApp) {
+    window.Telegram.WebApp.sendData(JSON.stringify(data));
+    alert("✅ Заказ отправлен!");
+    cart = [];
+    backToMain();
+  } else {
+    alert("❌ Ошибка отправки!");
   }
 }
