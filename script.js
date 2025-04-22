@@ -22,7 +22,7 @@ function updateCartUI() {
     total += itemTotal;
 
     const li = document.createElement("li");
-    li.className = "flex justify-between items-center bg-white p-4 rounded shadow";
+    li.className = "flex justify-between items-center bg-gray-800 p-4 rounded shadow";
 
     li.innerHTML = `
       <div>
