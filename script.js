@@ -1,93 +1,85 @@
 const tg = window.Telegram.WebApp;
 tg.expand();
 
-let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+let cart = [];
 
-const products = [
-  { name: "Roblox: 100 Robux", price: 120 },
-  { name: "Minecraft Premium", price: 450 },
-  { name: "Steam: CS2 скины", price: 999 },
-];
-
-function saveCart() {
-  localStorage.setItem("cart", JSON.stringify(cart));
+function addToCart(name, price) {
+  const item = cart.find(i => i.name === name);
+  if (item) {
+    item.quantity++;
+  } else {
+    cart.push({ name, price, quantity: 1 });
+  }
+  updateCartCount();
+  animateCart();
 }
 
-function addToCart(product) {
-  cart.push(product);
-  saveCart();
-  alert(`Товар "${product.name}" добавлен в корзину!`);
+function updateCartCount() {
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const badge = document.getElementById("cart-count");
+  if (badge) badge.innerText = count;
 }
 
-function renderProducts() {
-  const list = document.getElementById("product-list");
-  if (!list) return;
-  products.forEach((p, i) => {
-    const item = document.createElement("div");
-    item.className = "bg-white p-4 rounded shadow";
-    item.innerHTML = `
-      <h3 class="text-lg font-semibold">${p.name}</h3>
-      <p class="text-gray-700">${p.price}₽</p>
-      <button onclick="addToCart(products[${i}])" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded">Добавить</button>
-    `;
-    list.appendChild(item);
-  });
+function animateCart() {
+  const icon = document.getElementById("cart-icon");
+  if (icon) {
+    icon.classList.add("animate-bounce");
+    setTimeout(() => icon.classList.remove("animate-bounce"), 300);
+  }
+}
+
+function goToCart() {
+  document.getElementById("store").classList.add("hidden");
+  document.getElementById("cabinet").classList.add("hidden");
+  document.getElementById("cart").classList.remove("hidden");
+  renderCart();
+}
+
+function goToCabinet() {
+  document.getElementById("store").classList.add("hidden");
+  document.getElementById("cart").classList.add("hidden");
+  document.getElementById("cabinet").classList.remove("hidden");
+}
+
+function goBack() {
+  document.getElementById("store").classList.remove("hidden");
+  document.getElementById("cart").classList.add("hidden");
+  document.getElementById("cabinet").classList.add("hidden");
 }
 
 function renderCart() {
   const container = document.getElementById("cart-items");
-  if (!container) return;
   container.innerHTML = "";
-  let total = 0;
-  cart.forEach((item, i) => {
-    total += item.price;
+
+  if (cart.length === 0) {
+    container.innerHTML = "<p class='text-center text-gray-500'>Корзина пуста</p>";
+    return;
+  }
+
+  cart.forEach(item => {
     const div = document.createElement("div");
-    div.className = "bg-white p-4 rounded shadow flex justify-between items-center";
+    div.className = "flex justify-between py-2 border-b";
     div.innerHTML = `
-      <span>${item.name} — ${item.price}₽</span>
-      <button onclick="removeFromCart(${i})" class="text-red-500">Удалить</button>
+      <span>${item.name} x${item.quantity}</span>
+      <span>${item.price * item.quantity}₽</span>
     `;
     container.appendChild(div);
   });
-  document.getElementById("total").innerText = "Итого: " + total + "₽";
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  document.getElementById("cart-total").innerText = `Итого: ${total}₽`;
 }
 
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  saveCart();
-  renderCart();
-}
+function sendOrder() {
+  if (cart.length === 0) return;
 
-function checkout() {
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const data = {
-    user: tg.initDataUnsafe.user,
-    cart: cart
+    items: cart,
+    total: total
   };
-  fetch("https://api.telegram.org/bot7940302366:AAFNwbWvIJIo2SVCOIFm5aVg8n-jrVkDWiQ/sendMessage", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: "<YOUR_CHAT_ID>",
-      text: `🛍 Новый заказ от ${data.user.username || data.user.first_name}
-` +
-        data.cart.map(p => `• ${p.name} — ${p.price}₽`).join("\n") +
-        `\nИтого: ${data.cart.reduce((s, p) => s + p.price, 0)}₽`
-    })
-  }).then(() => {
-    alert("Заказ оформлен!");
-    cart = [];
-    saveCart();
-    window.location.href = "index.html";
-  });
-}
-
-function loadAccount() {
-  if (document.getElementById("user-name")) {
-    document.getElementById("user-name").innerText = tg.initDataUnsafe.user.username || tg.initDataUnsafe.user.first_name;
-    document.getElementById("user-id").innerText = tg.initDataUnsafe.user.id;
+  if (window.Telegram && Telegram.WebApp) {
+    Telegram.WebApp.sendData(JSON.stringify(data));
+    Telegram.WebApp.close();
   }
 }
-
-renderProducts();
-renderCart();
-loadAccount();
