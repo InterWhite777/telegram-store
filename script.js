@@ -27,7 +27,7 @@ function updateCartUI() {
     li.innerHTML = `
       <div>
         <p class="text-lg font-medium">${item.name}</p>
-        <p class="text-sm text-gray-500">Количество: ${item.quantity}</p>
+        <p class="text-sm text-gray-400">Количество: ${item.quantity}</p>
       </div>
       <div class="text-right">
         <p class="text-lg font-semibold">${itemTotal}₽</p>
