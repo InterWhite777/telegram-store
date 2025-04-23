@@ -8,7 +8,9 @@
   <script src="script.js" defer></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gradient-to-tr from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen bg-no-repeat bg-cover p-4">
+<body class="relative text-white min-h-screen p-4 bg-gradient-to-br from-[#1e293b] via-[#0f172a] to-[#1e293b] overflow-hidden">
+  <!-- Глянцевый эффект сверху -->
+  <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-black/20 pointer-events-none mix-blend-overlay"></div>
   <div class="container mx-auto p-4">
     <h1 class="text-center text-2xl font-bold mb-4">👤 Личный кабинет</h1>
     <p><strong>Имя:</strong> <span id="user-name"></span></p>
