@@ -96,8 +96,16 @@ function removeFromCart(index) {
 }
 
 function loadProfileInfo() {
-  const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
-  const username = user?.first_name || "Гость";
+  const tg = window.Telegram.WebApp;
 
-  document.getElementById("username").textContent = username;
+  const usernameSpan = document.getElementById("username");
+  const user = tg.initDataUnsafe?.user;
+
+  if (user) {
+    const name = user.username || `${user.first_name || ''} ${user.last_name || ''}`.trim();
+    usernameSpan.textContent = name || "Неизвестный пользователь";
+  } else {
+    usernameSpan.textContent = "Гость";
+  }
 }
+
