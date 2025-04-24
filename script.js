@@ -49,6 +49,7 @@ function openSection(section) {
   document.getElementById(`${section}-section`).classList.remove("hidden");
 
   if (section === "cart") updateCartUI();
+  if (section === "profile") loadProfileData();
 }
 
 function backToMain() {
@@ -70,6 +71,10 @@ function submitOrder() {
     items: cart,
     total: total
   };
+  // Сохранение истории покупок
+let history = JSON.parse(localStorage.getItem("purchaseHistory") || "[]");
+history.push(...cart); // добавляем все товары из корзины
+localStorage.setItem("purchaseHistory", JSON.stringify(history));
 
   if (window.Telegram.WebApp) {
     window.Telegram.WebApp.sendData(JSON.stringify(data));
@@ -85,4 +90,31 @@ function removeFromCart(index) {
   cart.splice(index, 1);
   updateCartUI();
 }
+
+
+// При открытии профиля — загрузить данные
+function loadProfileData() {
+  // Имя пользователя из Telegram
+  if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe?.user?.username) {
+    document.getElementById("username").textContent = Telegram.WebApp.initDataUnsafe.user.username;
+  } else {
+    document.getElementById("username").textContent = "Гость";
+
+ // История покупок из localStorage
+  const historyList = document.getElementById("purchase-history");
+  const history = JSON.parse(localStorage.getItem("purchaseHistory") || "[]");
+  historyList.innerHTML = "";
+
+  if (history.length === 0) {
+    historyList.innerHTML = `<li class="text-gray-500 italic">Покупок пока нет</li>`;
+  } else {
+    history.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.name} — ${item.price} ₽ × ${item.quantity}`;
+      historyList.appendChild(li);
+    });
+  }
+}
+
+
 
