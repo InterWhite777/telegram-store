@@ -99,7 +99,7 @@ function loadProfileData() {
     document.getElementById("username").textContent = Telegram.WebApp.initDataUnsafe.user.username;
   } else {
     document.getElementById("username").textContent = "Гость";
-
+  }
  // История покупок из localStorage
   const historyList = document.getElementById("purchase-history");
   const history = JSON.parse(localStorage.getItem("purchaseHistory") || "[]");
