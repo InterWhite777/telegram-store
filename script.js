@@ -51,6 +51,7 @@ function openSection(section) {
   document.getElementById(`${section}-section`).classList.remove("hidden");
 
   if (section === "cart") updateCartUI();
+  if (section === "profile") loadProfileInfo(); // 👈 добавили
 }
 
 function backToMain() {
@@ -90,3 +91,9 @@ function removeFromCart(index) {
   updateCartUI();
 }
 
+function loadProfileInfo() {
+  const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
+  const username = user?.first_name || "Гость";
+
+  document.getElementById("username").textContent = username;
+}
