@@ -57,30 +57,24 @@
   
   <!-- Профиль -->
   <div id="profile-section" class="hidden space-y-4 mt-4">
-    <h2 class="text-center text-xl font-semibold">👤 Личный кабинет</h2>
+    <div class="bg-gray-800 p-4 rounded-xl shadow-lg space-y-4">
+      <h2 class="text-center text-xl font-semibold">👤 Личный кабинет</h2>
 
 
-        <!-- Имя пользователя -->
-    <div class="flex justify-between">
-      <span class="font-semibold">Имя пользователя:</span>
-      <span id="username">Загрузка...</span>
-    </div>
-
+      <!-- Имя пользователя -->
+      <div class="flex justify-between">
+        <span class="font-semibold">Имя пользователя:</span>
+        <span id="username">Загрузка...</span>
+      </div>
 
       <!-- История покупок -->
-    <div>
-      <h3 class="font-semibold mt-4 mb-2">🧾 История покупок:</h3>
-      <ul id="purchase-history" class="list-disc list-inside space-y-1 text-sm text-gray-300">
-        <li class="text-gray-500 italic">Покупок пока нет</li>
-      </ul>
+      <div>
+        <h3 class="font-semibold mt-4 mb-2">🧾 История покупок:</h3>
+        <ul id="purchase-history" class="list-disc list-inside space-y-1 text-sm text-gray-300">
+          <li class="text-gray-500 italic">Покупок пока нет</li>
+        </ul>
+      </div>
     </div>
-
-        <!-- Баланс -->
-    <div class="flex justify-between">
-      <span class="font-semibold">💰 Баланс:</span>
-      <span id="balance">0 ₽</span>
-    </div>
-
     
     <!-- <p>Здесь будет информация о пользователе и истории покупок (позже добавим).</p> -->
     <button onclick="backToMain()" class="fixed bottom-4 left-4 bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-400">🔙 Назад</button>
