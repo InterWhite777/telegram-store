@@ -42,19 +42,23 @@ function updateCartUI() {
 
 
 function openSection(section) {
-  document.getElementById("store-section").classList.add("hidden");
-  document.getElementById("cart-section").classList.add("hidden");
-  document.getElementById("profile-section").classList.add("hidden");
+ // document.getElementById("store-section").classList.add("hidden");
+ // document.getElementById("cart-section").classList.add("hidden");
+ // document.getElementById("profile-section").classList.add("hidden");
+  const sections = ["main", "store-section", "cart-section", "profile-section"];
+  sections.forEach(id => document.getElementById(id).classList.add("hidden"));
 
   document.getElementById(`${section}-section`).classList.remove("hidden");
 
   if (section === "cart") updateCartUI();
+  if (section === "profile") loadProfileInfo();
 }
 
 function backToMain() {
-  document.getElementById("store-section").classList.remove("hidden");
-  document.getElementById("cart-section").classList.add("hidden");
-  document.getElementById("profile-section").classList.add("hidden");
+ // document.getElementById("store-section").classList.remove("hidden");
+ // document.getElementById("cart-section").classList.add("hidden");
+ // document.getElementById("profile-section").classList.add("hidden");
+  openSection("store");
 }
 
 function submitOrder() {
@@ -86,4 +90,18 @@ function removeFromCart(index) {
   cart.splice(index, 1);
   updateCartUI();
 }
+
+// Загрузка профиля
+function loadProfileInfo() {
+  // Telegram WebApp API (если доступен)
+  const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
+  const username = user?.first_name || "Гость";
+  document.getElementById("username").textContent = username;
+
+  // Пример истории покупок (позже можно заменить на реальную)
+  const history = document.getElementById("purchase-history");
+  history.innerHTML = `
+    <li>Roblox Item – 150₽</li>
+    <li>Steam Game – 600₽</li>
+  `;
 
