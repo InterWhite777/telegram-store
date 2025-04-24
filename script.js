@@ -56,7 +56,6 @@ function backToMain() {
   document.getElementById("store-section").classList.remove("hidden");
   document.getElementById("cart-section").classList.add("hidden");
   document.getElementById("profile-section").classList.add("hidden");
-  document.getElementById("main").classList.remove("hidden");
 }
 
 function submitOrder() {
