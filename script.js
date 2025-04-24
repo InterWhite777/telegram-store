@@ -52,9 +52,7 @@ function openSection(section) {
     if (el) el.classList.add("hidden");
   });
 
- // document.getElementById(`${section}-section`).classList.remove("hidden");
-  const target = document.getElementById(`${section}-section`);
-  if (target) target.classList.remove("hidden");
+  document.getElementById(`${section}-section`).classList.remove("hidden");
 
   if (section === "cart") updateCartUI();
 }
