@@ -46,9 +46,15 @@ function openSection(section) {
  // document.getElementById("cart-section").classList.add("hidden");
  // document.getElementById("profile-section").classList.add("hidden");
   const sections = ["main", "store-section", "cart-section", "profile-section"];
-  sections.forEach(id => document.getElementById(id).classList.add("hidden"));
 
-  document.getElementById(`${section}-section`).classList.remove("hidden");
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("hidden");
+  });
+
+ // document.getElementById(`${section}-section`).classList.remove("hidden");
+  const target = document.getElementById(`${section}-section`);
+  if (target) target.classList.remove("hidden");
 
   if (section === "cart") updateCartUI();
   if (section === "profile") loadProfileInfo(); // 👈 добавили
