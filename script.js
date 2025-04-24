@@ -42,7 +42,6 @@ function updateCartUI() {
 
 
 function openSection(section) {
-  document.getElementById("main").classList.add("hidden");
   document.getElementById("store-section").classList.add("hidden");
   document.getElementById("cart-section").classList.add("hidden");
   document.getElementById("profile-section").classList.add("hidden");
