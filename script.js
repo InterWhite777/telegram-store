@@ -1,5 +1,9 @@
 let cart = [];
 
+window.Telegram.WebApp.ready();
+window.Telegram.WebApp.expand();
+
+
 function addToCart(name, price) {
   const existing = cart.find(item => item.name === name);
   if (existing) {
@@ -97,15 +101,19 @@ function removeFromCart(index) {
 
 function loadProfileInfo() {
   const tg = window.Telegram.WebApp;
+  tg.ready();
 
   const usernameSpan = document.getElementById("username");
   const user = tg.initDataUnsafe?.user;
 
   if (user) {
-    const name = user.username || `${user.first_name || ''} ${user.last_name || ''}`.trim();
+    const name = user.username
+      ? `@${user.username}`
+      : `${user.first_name || ''} ${user.last_name || ''}`.trim();
     usernameSpan.textContent = name || "Неизвестный пользователь";
   } else {
-    usernameSpan.textContent = "УГость";
+    usernameSpan.textContent = "Гость";
   }
 }
+
 
