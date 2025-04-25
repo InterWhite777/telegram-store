@@ -1,9 +1,5 @@
 let cart = [];
 
-window.Telegram.WebApp.ready();
-window.Telegram.WebApp.expand();
-
-
 function addToCart(name, price) {
   const existing = cart.find(item => item.name === name);
   if (existing) {
