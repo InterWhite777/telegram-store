@@ -116,7 +116,7 @@ function loadProfileInfo() {
     const name = user.username || `${user.first_name || ''} ${user.last_name || ''}`.trim();
     usernameSpan.textContent = name || "Неизвестный пользователь";
   } else {
-    usernameSpan.textContent = "УГость";
+    usernameSpan.textContent = "Гость";
   }
 
   // Загрузка истории заказов
