@@ -110,20 +110,16 @@ function removeFromCart(index) {
 function loadProfileInfo() {
   const tg = window.Telegram.WebApp;
   const usernameSpan = document.getElementById("username");
-
   const user = tg.initDataUnsafe?.user;
 
   if (user) {
-    const username = user.username ? `@${user.username}` : "";
-    const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
-    const displayName = username || fullName || "Неизвестный пользователь";
-    usernameSpan.textContent = displayName;
+    const name = user.username || `${user.first_name || ''} ${user.last_name || ''}`.trim();
+    usernameSpan.textContent = name || "Неизвестный пользователь";
   } else {
     usernameSpan.textContent = "Гость";
   }
-}
 
- // Загрузка истории
+  // Загрузка истории заказов
   const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
   const historyList = document.getElementById("purchase-history");
 
@@ -136,7 +132,31 @@ function loadProfileInfo() {
 
   history.forEach((order, index) => {
     const li = document.createElement("li");
-    li.innerHTML = `#${index + 1} — ${order.date}, ${order.total}₽`;
+    li.classList.add("border", "border-gray-600", "rounded", "p-2");
+
+    const summary = document.createElement("div");
+    summary.className = "flex justify-between items-center cursor-pointer";
+    summary.innerHTML = `
+      <span>📦 Заказ #${index + 1} — ${order.date}</span>
+      <span class="text-green-400 font-semibold">${order.total}₽</span>
+    `;
+
+    const details = document.createElement("div");
+    details.classList.add("hidden", "mt-2", "text-sm", "text-gray-300");
+
+    order.items.forEach(item => {
+      const p = document.createElement("p");
+      p.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}₽`;
+      details.appendChild(p);
+    });
+
+    summary.onclick = () => {
+      details.classList.toggle("hidden");
+    };
+
+    li.appendChild(summary);
+    li.appendChild(details);
     historyList.appendChild(li);
   });
 }
+
