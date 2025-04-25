@@ -74,10 +74,10 @@ function submitOrder() {
   let total = 0;
   cart.forEach(item => total += item.price * item.quantity);
 
- // const data = {
-  //  items: cart,
-  //  total: total
- // };
+  const data = {
+   items: cart,
+    total: total
+  };
 
   const order = {
     items: [...cart],
