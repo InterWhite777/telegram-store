@@ -74,11 +74,23 @@ function submitOrder() {
   let total = 0;
   cart.forEach(item => total += item.price * item.quantity);
 
-  const data = {
-    items: cart,
-    total: total
+ // const data = {
+  //  items: cart,
+  //  total: total
+ // };
+
+  const order = {
+    items: [...cart],
+    total: total,
+    date: new Date().toLocaleString()
   };
 
+
+  
+    // Сохраняем заказ в истории
+  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+  history.push(order);
+  localStorage.setItem("orderHistory", JSON.stringify(history));
 
   if (window.Telegram.WebApp) {
     window.Telegram.WebApp.sendData(JSON.stringify(data));
@@ -111,4 +123,20 @@ function loadProfileInfo() {
   }
 }
 
+ // Загрузка истории
+  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+  const historyList = document.getElementById("purchase-history");
 
+  historyList.innerHTML = "";
+
+  if (history.length === 0) {
+    historyList.innerHTML = `<li class="text-gray-500 italic">Покупок пока нет</li>`;
+    return;
+  }
+
+  history.forEach((order, index) => {
+    const li = document.createElement("li");
+    li.innerHTML = `#${index + 1} — ${order.date}, ${order.total}₽`;
+    historyList.appendChild(li);
+  });
+}
