@@ -101,20 +101,20 @@ function removeFromCart(index) {
 
 function loadProfileInfo() {
   const tg = window.Telegram.WebApp;
-  tg.ready();
-
   const usernameSpan = document.getElementById("username");
+
   const user = tg.initDataUnsafe?.user;
 
   if (user) {
-    const name = user.username
-      ? `@${user.username}`
-      : `${user.first_name || ''} ${user.last_name || ''}`.trim();
-    usernameSpan.textContent = name || "Неизвестный пользователь";
+    const username = user.username ? `@${user.username}` : "";
+    const fullName = [user.first_name, user.last_name].filter(Boolean).join(" ");
+    const displayName = username || fullName || "Неизвестный пользователь";
+    usernameSpan.textContent = displayName;
   } else {
     usernameSpan.textContent = "Гость";
   }
 }
+
 
 function showDebugInfo() {
   const user = window.Telegram.WebApp.initDataUnsafe?.user;
