@@ -116,4 +116,10 @@ function loadProfileInfo() {
   }
 }
 
+function showDebugInfo() {
+  const user = window.Telegram.WebApp.initDataUnsafe?.user;
+  document.getElementById("tg-id").textContent = user?.id || "нет";
+  document.getElementById("tg-name").textContent = user?.username || user?.first_name || "Гость";
+}
+
 
