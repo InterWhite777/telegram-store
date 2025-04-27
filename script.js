@@ -33,8 +33,10 @@ function updateCartUI() {
       transition 
       transform 
       hover:scale-105 
+      hover:shadow-lg 
+      hover:shadow-indigo-500/40
       duration-300
-    `.replace(/\s+/g, ' ').trim(); // Аккуратно удаляем лишние пробелы
+    `.replace(/\s+/g, ' ').trim();
 
     li.innerHTML = `
       <div class="flex justify-between items-center">
@@ -53,11 +55,12 @@ function updateCartUI() {
 
   cartTotal.innerHTML = `
     <div class="bg-yellow-200 text-black font-bold rounded-lg p-3 mt-4 flex justify-between items-center shadow-inner">
-      <span>💰 Итого:</span> 
+      <span>💰 Итого: </span> 
       <span id="total-amount">${total}₽</span>
     </div>
   `;
 }
+
 
 
 function openSection(section) {
