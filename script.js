@@ -144,11 +144,22 @@ function loadProfileInfo() {
     const details = document.createElement("div");
     details.classList.add("hidden", "mt-2", "text-sm", "text-gray-300");
 
+        // Словарь для замены названий товаров
+    const nameMapping = {
+      "Steam Game": "🕹 Игра в Steam",
+      "Project9class": "⛏ Предмет Minecraft",
+      "Roblox Item": "🎮 Предмет Roblox",
+      "Steam Account": "Рандомный аккаунт Steam",
+      // сюда добавляй свои замены
+    };
+    
     order.items.forEach(item => {
+      let displayName = nameMapping[item.name] || item.name;
       const p = document.createElement("p");
-      p.textContent = `${item.name} × ${item.quantity} = ${item.price * item.quantity}₽`;
+      p.textContent = `${displayName} × ${item.quantity} = ${item.price * item.quantity}₽`;
       details.appendChild(p);
     });
+
 
     summary.onclick = () => {
       details.classList.toggle("hidden");
