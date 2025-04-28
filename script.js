@@ -56,6 +56,11 @@ function submitOrder() {
     total: total
   };
 
+    // Сохранение истории покупок
+  let history = JSON.parse(localStorage.getItem("purchaseHistory") || "[]");
+  history.push(...cart); // добавляем все товары из корзины
+  localStorage.setItem("purchaseHistory", JSON.stringify(history));
+
   if (window.Telegram.WebApp) {
     window.Telegram.WebApp.sendData(JSON.stringify(data));
     alert("✅ Заказ отправлен!");
