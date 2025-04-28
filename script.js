@@ -16,10 +16,21 @@ function updateCartUI() {
   const cartTotal = document.getElementById("cart-total");
 
   cartList.classList.add("overflow-hidden", "px-2");
-
   cartList.innerHTML = "";
 
   let total = 0;
+
+  if (cart.length === 0) {
+    // Если корзина пуста, показываем красивое сообщение
+    const emptyMessage = document.createElement("div");
+    emptyMessage.className = "text-center text-gray-400 text-lg mt-5 animate-fade";
+    emptyMessage.innerHTML = "Корзина пуста 🛒";
+    cartList.appendChild(emptyMessage);
+
+    // Очищаем блок с итого
+    cartTotal.innerHTML = "";
+    return;
+  }
 
   cart.forEach((item, index) => {
     const itemTotal = item.price * item.quantity;
@@ -58,18 +69,30 @@ function updateCartUI() {
     cartList.appendChild(li);
   });
 
-  const previousTotal = parseInt(document.getElementById("total-amount")?.textContent) || 0;
-
   cartTotal.innerHTML = `
     <div class="flex justify-between items-center p-2 rounded text-lg font-semibold text-yellow-400">
       <span>💰 Итого:</span>
-      <span id="total-amount">${previousTotal} ₽</span>
+      <span id="total-amount">${total} ₽</span>
     </div>
   `;
 
-  animateTotal(previousTotal, total);
-  highlightCheckoutButton();
+
+
+
+  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+  history.push(order);
+  localStorage.setItem("orderHistory", JSON.stringify(history));
+
+  if (window.Telegram.WebApp) {
+    window.Telegram.WebApp.sendData(JSON.stringify(data));
+    alert("✅ Заказ отправлен!");
+    cart = [];
+    backToMain();
+  } else {
+    alert("❌ Ошибка отправки!");
+  }
 }
+
 
 // Анимация плавной смены суммы
 function animateTotal(oldTotal, newTotal) {
@@ -133,22 +156,6 @@ function submitOrder() {
   cart.length = 0;
   updateCartUI();
 
-
-
-
-  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
-  history.push(order);
-  localStorage.setItem("orderHistory", JSON.stringify(history));
-
-  if (window.Telegram.WebApp) {
-    window.Telegram.WebApp.sendData(JSON.stringify(data));
-    alert("✅ Заказ отправлен!");
-    cart = [];
-    backToMain();
-  } else {
-    alert("❌ Ошибка отправки!");
-  }
-}
 
 
 
