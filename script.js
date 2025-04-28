@@ -14,6 +14,9 @@ function addToCart(name, price) {
 function updateCartUI() {
   const cartList = document.getElementById("cart-items");
   const cartTotal = document.getElementById("cart-total");
+
+  cartList.classList.add("overflow-hidden", "px-2"); // Добавил это
+
   cartList.innerHTML = "";
 
   let total = 0;
@@ -24,17 +27,19 @@ function updateCartUI() {
 
     const li = document.createElement("li");
     li.className = `
+      w-full 
       bg-gray-800/80 
       border border-gray-600 
       rounded-lg 
-      p-4 
+      p-3 
       mb-3 
       shadow-md 
       transition 
       transform 
+      origin-center 
       hover:scale-105 
       hover:shadow-lg 
-      hover:shadow-indigo-500/40
+      hover:shadow-indigo-500/40 
       duration-300
     `.replace(/\s+/g, ' ').trim();
 
@@ -55,11 +60,12 @@ function updateCartUI() {
 
   cartTotal.innerHTML = `
     <div class="bg-yellow-200 text-black font-bold rounded-lg p-3 mt-4 flex justify-between items-center shadow-inner">
-      <span>💰 Итого: </span> 
-      <span id="total-amount"> ${total}₽</span>
+      <span>💰 Итого:</span> 
+      <span id="total-amount">${total}₽</span>
     </div>
   `;
 }
+
 
 
 
