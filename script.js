@@ -106,9 +106,6 @@ function submitOrder() {
 
 
 function openSection(section) {
- // document.getElementById("store-section").classList.add("hidden");
- // document.getElementById("cart-section").classList.add("hidden");
- // document.getElementById("profile-section").classList.add("hidden");
   const sections = ["main", "store-section", "cart-section", "profile-section"];
 
   sections.forEach(id => {
@@ -123,9 +120,6 @@ function openSection(section) {
 }
 
 function backToMain() {
- // document.getElementById("store-section").classList.remove("hidden");
- // document.getElementById("cart-section").classList.add("hidden");
- // document.getElementById("profile-section").classList.add("hidden");
   openSection("store");
 }
 
