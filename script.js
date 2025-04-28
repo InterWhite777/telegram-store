@@ -15,7 +15,7 @@ function updateCartUI() {
   const cartList = document.getElementById("cart-items");
   const cartTotal = document.getElementById("cart-total");
 
-  cartList.classList.add("overflow-hidden", "px-2"); // Добавил это
+  cartList.classList.add("overflow-hidden", "px-2");
 
   cartList.innerHTML = "";
 
@@ -58,13 +58,98 @@ function updateCartUI() {
     cartList.appendChild(li);
   });
 
+  const previousTotal = parseInt(document.getElementById("total-amount")?.textContent) || 0;
+
   cartTotal.innerHTML = `
     <div class="flex justify-between items-center p-2 rounded text-lg font-semibold text-yellow-400">
       <span>💰 Итого:</span>
-      <span id="total-amount">${total} ₽</span>
+      <span id="total-amount">${previousTotal} ₽</span>
     </div>
   `;
+
+  animateTotal(previousTotal, total);
+  highlightCheckoutButton();
 }
+
+// Анимация плавной смены суммы
+function animateTotal(oldTotal, newTotal) {
+  const totalAmount = document.getElementById("total-amount");
+  const duration = 500;
+  const startTime = performance.now();
+
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const current = Math.floor(oldTotal + (newTotal - oldTotal) * progress);
+
+    totalAmount.textContent = `${current} ₽`;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+
+  requestAnimationFrame(update);
+}
+
+// Подсветка кнопки "Оформить заказ"
+function highlightCheckoutButton() {
+  const checkoutButton = document.getElementById("checkout-button");
+  if (!checkoutButton) return;
+
+  checkoutButton.classList.add("ring", "ring-green-400", "ring-offset-2");
+
+  setTimeout(() => {
+    checkoutButton.classList.remove("ring", "ring-green-400", "ring-offset-2");
+  }, 500);
+}
+
+// === ВСТАВЛЯЕМ ТВОЙ submitOrder ===
+function submitOrder() {
+  if (cart.length === 0) {
+    alert("Корзина пуста!");
+    return;
+  }
+
+  let total = 0;
+  cart.forEach(item => total += item.price * item.quantity);
+
+  const data = {
+    items: cart,
+    total: total
+  };
+
+  const order = {
+    items: [...cart],
+    total: total,
+    date: new Date().toLocaleString()
+  };
+
+  console.log("Отправка заказа:", data); // Можно заменить на отправку через Telegram API, например
+
+  alert("Заказ оформлен!\nОбщая сумма: " + total + " ₽");
+
+  // Очищаем корзину после заказа
+  cart.length = 0;
+  updateCartUI();
+
+
+
+
+  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+  history.push(order);
+  localStorage.setItem("orderHistory", JSON.stringify(history));
+
+  if (window.Telegram.WebApp) {
+    window.Telegram.WebApp.sendData(JSON.stringify(data));
+    alert("✅ Заказ отправлен!");
+    cart = [];
+    backToMain();
+  } else {
+    alert("❌ Ошибка отправки!");
+  }
+}
+
 
 
 
@@ -93,42 +178,6 @@ function backToMain() {
   openSection("store");
 }
 
-function submitOrder() {
-  if (cart.length === 0) {
-    alert("Корзина пуста!");
-    return;
-  }
-
-  let total = 0;
-  cart.forEach(item => total += item.price * item.quantity);
-
-  const data = {
-   items: cart,
-    total: total
-  };
-
-  const order = {
-    items: [...cart],
-    total: total,
-    date: new Date().toLocaleString()
-  };
-
-
-  
-    // Сохраняем заказ в истории
-  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
-  history.push(order);
-  localStorage.setItem("orderHistory", JSON.stringify(history));
-
-  if (window.Telegram.WebApp) {
-    window.Telegram.WebApp.sendData(JSON.stringify(data));
-    alert("✅ Заказ отправлен!");
-    cart = [];
-    backToMain();
-  } else {
-    alert("❌ Ошибка отправки!");
-  }
-}
 
 function removeFromCart(index) {
   cart.splice(index, 1);
