@@ -66,7 +66,21 @@ function updateCartUI() {
   ;
 }
 
+function submitOrder() {
 
+
+  if (cart.length === 0) {
+    alert("Корзина пуста!");
+    return;
+  }
+
+  let total = 0;
+  cart.forEach(item => total += item.price * item.quantity);
+
+  const data = {
+    items: cart,
+    total: total
+  };
 
 
   const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
