@@ -14,57 +14,21 @@ function addToCart(name, price) {
 function updateCartUI() {
   const cartList = document.getElementById("cart-items");
   const cartTotal = document.getElementById("cart-total");
-
-  cartList.classList.add("overflow-hidden", "px-2"); 
-
   cartList.innerHTML = "";
 
   let total = 0;
 
-  cart.forEach((item, index) => {
-    const itemTotal = item.price * item.quantity;
-    total += itemTotal;
-
+  cart.forEach(item => {
+    const itemText = `${item.name} x${item.quantity} = ${item.price * item.quantity}₽`;
     const li = document.createElement("li");
-    li.className = 
-      w-full 
-      bg-gray-800/80 
-      border border-gray-600 
-      rounded-lg 
-      p-3 
-      mb-3 
-      shadow-md 
-      transition 
-      transform 
-      origin-center 
-      hover:scale-105 
-      hover:shadow-lg 
-      hover:shadow-indigo-500/40 
-      duration-300
-    .replace(/\s+/g, ' ').trim();
-
-    li.innerHTML = 
-      <div class="flex justify-between items-center">
-        <div>
-          <p class="text-lg font-medium text-white">${item.name}</p>
-          <p class="text-sm text-gray-400">Количество: ${item.quantity}</p>
-        </div>
-        <div class="text-right">
-          <p class="text-lg font-semibold text-white">${itemTotal}₽</p>
-          <button onclick="removeFromCart(${index})" class="mt-1 text-sm text-red-400 hover:underline">Удалить</button>
-        </div>
-      </div>
-    ;
+    li.textContent = itemText;
     cartList.appendChild(li);
+    total += item.price * item.quantity;
   });
 
-  cartTotal.innerHTML = 
-    <div class="flex justify-between items-center p-2 rounded text-lg font-semibold text-yellow-400">
-      <span>💰 Итого:</span>
-      <span id="total-amount">${total} ₽</span>
-    </div>
-  ;
+  cartTotal.textContent = `💰 Итого: ${total}₽`;
 }
+
 
 function submitOrder() {
   if (cart.length === 0) {
@@ -76,20 +40,9 @@ function submitOrder() {
   cart.forEach(item => total += item.price * item.quantity);
 
   const data = {
-   items: cart,
+    items: cart,
     total: total
   };
-
-  const order = {
-    items: [...cart],
-    total: total,
-    date: new Date().toLocaleString()
-  };
-
-
-  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
-  history.push(order);
-  localStorage.setItem("orderHistory", JSON.stringify(history));
 
   if (window.Telegram.WebApp) {
     window.Telegram.WebApp.sendData(JSON.stringify(data));
