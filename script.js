@@ -15,29 +15,18 @@ function updateCartUI() {
   const cartList = document.getElementById("cart-items");
   const cartTotal = document.getElementById("cart-total");
 
-  cartList.classList.add("overflow-hidden", "px-2");
+  cartList.classList.add("overflow-hidden", "px-2"); 
+
   cartList.innerHTML = "";
 
   let total = 0;
-
-  if (cart.length === 0) {
-    // Если корзина пуста, показываем красивое сообщение
-    const emptyMessage = document.createElement("div");
-    emptyMessage.className = "text-center text-gray-400 text-lg mt-5 animate-fade";
-    emptyMessage.innerHTML = "Корзина пуста 🛒";
-    cartList.appendChild(emptyMessage);
-
-    // Очищаем блок с итого
-    cartTotal.innerHTML = "";
-    return;
-  }
 
   cart.forEach((item, index) => {
     const itemTotal = item.price * item.quantity;
     total += itemTotal;
 
     const li = document.createElement("li");
-    li.className = `
+    li.className = 
       w-full 
       bg-gray-800/80 
       border border-gray-600 
@@ -52,9 +41,9 @@ function updateCartUI() {
       hover:shadow-lg 
       hover:shadow-indigo-500/40 
       duration-300
-    `.replace(/\s+/g, ' ').trim();
+    .replace(/\s+/g, ' ').trim();
 
-    li.innerHTML = `
+    li.innerHTML = 
       <div class="flex justify-between items-center">
         <div>
           <p class="text-lg font-medium text-white">${item.name}</p>
@@ -65,16 +54,17 @@ function updateCartUI() {
           <button onclick="removeFromCart(${index})" class="mt-1 text-sm text-red-400 hover:underline">Удалить</button>
         </div>
       </div>
-    `;
+    ;
     cartList.appendChild(li);
   });
 
-  cartTotal.innerHTML = `
+  cartTotal.innerHTML = 
     <div class="flex justify-between items-center p-2 rounded text-lg font-semibold text-yellow-400">
       <span>💰 Итого:</span>
       <span id="total-amount">${total} ₽</span>
     </div>
-  `;
+  ;
+}
 
 
 
