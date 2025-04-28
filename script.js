@@ -18,15 +18,27 @@ function updateCartUI() {
 
   let total = 0;
 
-  cart.forEach(item => {
-    const itemText = `${item.name} x${item.quantity} = ${item.price * item.quantity}₽`;
+  cart.forEach((item, index) => {
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
+
     const li = document.createElement("li");
-    li.textContent = itemText;
+    li.className = "flex justify-between items-center bg-white p-4 rounded shadow";
+
+    li.innerHTML = `
+      <div>
+        <p class="text-lg font-medium">${item.name}</p>
+        <p class="text-sm text-gray-500">Количество: ${item.quantity}</p>
+      </div>
+      <div class="text-right">
+        <p class="text-lg font-semibold">${itemTotal}₽</p>
+        <button onclick="removeFromCart(${index})" class="mt-1 text-sm text-red-500 hover:underline">Удалить</button>
+      </div>
+    `;
     cartList.appendChild(li);
-    total += item.price * item.quantity;
   });
 
-  cartTotal.textContent = `💰 Итого: ${total}₽`;
+  cartTotal.innerHTML = `💰 Итого: <span id="total-amount">${total}₽</span>`;
 }
 
 
