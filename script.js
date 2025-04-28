@@ -67,8 +67,6 @@ function updateCartUI() {
 }
 
 function submitOrder() {
-
-
   if (cart.length === 0) {
     alert("Корзина пуста!");
     return;
@@ -78,8 +76,14 @@ function submitOrder() {
   cart.forEach(item => total += item.price * item.quantity);
 
   const data = {
-    items: cart,
+   items: cart,
     total: total
+  };
+
+  const order = {
+    items: [...cart],
+    total: total,
+    date: new Date().toLocaleString()
   };
 
 
