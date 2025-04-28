@@ -59,9 +59,9 @@ function updateCartUI() {
   });
 
   cartTotal.innerHTML = `
-    <div class="text-black font-semibold rounded-lg p-3 mt-4 flex justify-between items-center shadow-inner">
+    <div class="bg-yellow-200 text-black font-semibold rounded-lg p-3 mt-4 flex justify-between items-center shadow-inner">
       <span>💰 Итого:</span> 
-      <span id="total-amount">${total} ₽</span>
+      <span id="total-amount"> ${total} ₽</span>
     </div>
   `;
 }
