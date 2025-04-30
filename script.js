@@ -15,7 +15,7 @@ function updateCartUI() {
   const cartList = document.getElementById("cart-items");
   const cartTotal = document.getElementById("cart-total");
 
-  cartList.classList.add("overflow-hidden", "px-2"); // Добавил это
+  cartList.classList.add("overflow-hidden", "px-2");
 
   cartList.innerHTML = "";
 
@@ -58,12 +58,50 @@ function updateCartUI() {
     cartList.appendChild(li);
   });
 
+  const previousTotal = parseInt(document.getElementById("total-amount")?.textContent) || 0;
+
   cartTotal.innerHTML = `
-    <div class="bg-yellow-200 text-black font-semibold rounded-lg p-3 mt-4 flex items-center shadow-inner">
-      <span>💰 Итого:</span> 
-      <span id="total-amount">${total}₽</span>
+    <div class="flex justify-between items-center p-2 rounded text-lg font-semibold text-yellow-400">
+      <span>💰 Итого:</span>
+      <span id="total-amount">${previousTotal} ₽</span>
     </div>
   `;
+
+  animateTotal(previousTotal, total);
+  highlightCheckoutButton();
+}
+
+// Анимация плавной смены суммы
+function animateTotal(oldTotal, newTotal) {
+  const totalAmount = document.getElementById("total-amount");
+  const duration = 500;
+  const startTime = performance.now();
+
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const current = Math.floor(oldTotal + (newTotal - oldTotal) * progress);
+
+    totalAmount.textContent = `${current} ₽`;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+
+  requestAnimationFrame(update);
+}
+
+// Подсветка кнопки "Оформить заказ"
+function highlightCheckoutButton() {
+  const checkoutButton = document.getElementById("checkout-button");
+  if (!checkoutButton) return;
+
+  checkoutButton.classList.add("ring", "ring-green-400", "ring-offset-2");
+
+  setTimeout(() => {
+    checkoutButton.classList.remove("ring", "ring-green-400", "ring-offset-2");
+  }, 500);
 }
 
 
@@ -95,6 +133,23 @@ function submitOrder() {
   } else {
     alert("❌ Ошибка отправки!");
   }
+
+
+  const order = {
+    items: [...cart],
+    total: total,
+    date: new Date().toLocaleString()
+  };
+
+  console.log("Отправка заказа:", data); // Можно заменить на отправку через Telegram API, например
+
+  alert("Заказ оформлен!\nОбщая сумма: " + total + " ₽");
+
+  // Очищаем корзину после заказа
+  cart.length = 0;
+  updateCartUI();
+
+  
 }
 
 
