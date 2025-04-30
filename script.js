@@ -24,7 +24,7 @@ function updateCartUI() {
     // Если корзина пуста, показываем красивое сообщение
     const emptyMessage = document.createElement("div");
     emptyMessage.className = "text-center text-gray-400 text-lg mt-5 animate-fade";
-    emptyMessage.innerHTML = "Корзина пуста 🛒";
+    emptyMessage.innerHTML = "Корзина пуста";
     cartList.appendChild(emptyMessage);
 
     // Очищаем блок с итого
