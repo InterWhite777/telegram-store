@@ -120,37 +120,40 @@ function submitOrder() {
     total: total
   };
 
-    // Сохранение истории покупок
-  let history = JSON.parse(localStorage.getItem("purchaseHistory") || "[]");
-  history.push(...cart); // добавляем все товары из корзины
-  localStorage.setItem("purchaseHistory", JSON.stringify(history));
-
-  if (window.Telegram.WebApp) {
-    window.Telegram.WebApp.sendData(JSON.stringify(data));
-    alert("✅ Заказ отправлен!");
-    cart = [];
-    backToMain();
-  } else {
-    alert("❌ Ошибка отправки!");
-  }
-
-
   const order = {
     items: [...cart],
     total: total,
     date: new Date().toLocaleString()
   };
 
-  console.log("Отправка заказа:", data); // Можно заменить на отправку через Telegram API, например
+  // Сохраняем заказ в историю
+  const history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+  history.push(order);
+  localStorage.setItem("orderHistory", JSON.stringify(history));
 
-  alert("Заказ оформлен!\nОбщая сумма: " + total + " ₽");
+  // 🎬 Анимация "падения" карточек перед очисткой корзины
+  const cartList = document.getElementById("cart-items");
+  const items = cartList.querySelectorAll("li");
 
-  // Очищаем корзину после заказа
-  cart.length = 0;
-  updateCartUI();
+  items.forEach((item, i) => {
+    item.classList.add("fall-out");
+    item.style.animationDelay = `${i * 50}ms`; // задержка для каждой
+  });
 
-  
+  setTimeout(() => {
+    cart = [];
+    updateCartUI();
+  }, items.length * 50 + 400); // подождём пока закончится анимация
+
+  if (window.Telegram.WebApp) {
+    window.Telegram.WebApp.sendData(JSON.stringify(data));
+    alert("✅ Заказ отправлен!");
+    backToMain();
+  } else {
+    alert("❌ Ошибка отправки!");
+  }
 }
+
 
 
 
@@ -170,15 +173,46 @@ function openSection(section) {
   if (section === "profile") loadProfileInfo();
 }
 
+
+
+
+
+
+
 function backToMain() {
   openSection("store");
 }
 
 
+
+
+
+
+
 function removeFromCart(index) {
   cart.splice(index, 1);
-  updateCartUI();
+
+  if (cart.length === 0) {
+    const cartList = document.getElementById("cart-items");
+    const items = cartList.querySelectorAll("li");
+    items.forEach((item, i) => {
+      item.classList.add("fall-out");
+      item.style.animationDelay = `${i * 50}ms`;
+    });
+
+    setTimeout(() => {
+      updateCartUI();
+    }, items.length * 50 + 400);
+  } else {
+    updateCartUI();
+  }
 }
+
+
+
+
+
+
 
 function loadProfileInfo() {
   const tg = window.Telegram.WebApp;
